@@ -4,7 +4,7 @@
 # 命令：docker commit 提交容器成为一个新的副本
 
 # 命令和git原理类似
-docker commit -m="提交的信息" -a='坐着' 容器id 目标镜像名:[tag]
+docker commit -m="提交的信息" -a='作者' 容器id 目标镜像名:[tag]
 ```
 
 ## 测试：
@@ -25,5 +25,40 @@ sha256:d18a2671e0f3a8f66d009219de8a278e77f3c24c473147dec4a97a3c29c43d3f
 [root@LuLuLuLuHost run]# docker images -a
 REPOSITORY            TAG       IMAGE ID       CREATED         SIZE
 centosluxh            1.0       d18a2671e0f3   5 seconds ago   231MB
+```
+
+
+
+> 镜像打包
+
+```shell
+# 镜像打包
+docker save -o /root/xxx.tar <name>
+
+[root@LuLuLuLuHost ~]# docker images
+REPOSITORY            TAG       IMAGE ID       CREATED          SIZE
+luluredis             1.0       4da22cef58b7   52 minutes ago   113MB
+redis                 latest    7614ae9453d1   6 days ago       113MB
+
+[root@LuLuLuLuHost ~]# docker save -o /root/luredis.tar 4da22cef58b7
+[root@LuLuLuLuHost ~]# ls
+luredis.tar
+
+# 镜像导入
+docker load -i /root/xxx.tar
+
+[root@LuLuLuLuHost ~]# docker load -i luredis.tar 
+6a113940bec0: Loading layer [==================================================>]  4.608kB/4.608kB
+Loaded image ID: sha256:4da22cef58b76f3a05764c9489d0165f47b2528e5bb3ed32c5d25d1064fb9721
+[root@LuLuLuLuHost ~]# docker images
+REPOSITORY            TAG       IMAGE ID       CREATED          SIZE
+<none>                <none>    4da22cef58b7   59 minutes ago   113MB # docker tag 可以重新替换名称
+redis                 latest    7614ae9453d1   6 days ago       113MB
+
+# 容器打包
+docker export -o /root/xxx.tar <name>
+
+# 容器导入
+docker import xx.tar <name>:[tag]
 ```
 
